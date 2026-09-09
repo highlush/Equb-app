@@ -515,5 +515,25 @@ function addMember() {
   document.getElementById("memberPayment").value = "";
 }
 </script>
+<script>
+function recordPayment() {
+  const member = document.getElementById("paymentMember").value;
+  const amount = document.getElementById("paymentAmount").value;
+
+  if (member === "" || amount === "") {
+    alert("ኩሎም ቦታታት ምልኣዮም።");
+    return;
+  }
+
+  const payment = document.createElement("p");
+  payment.innerHTML =
+    "👤 " + member + " | 💰 " + amount + " ብር";
+
+  document.getElementById("paymentList").appendChild(payment);
+
+  document.getElementById("paymentMember").value = "";
+  document.getElementById("paymentAmount").value = "";
+}
+</script>
 </body>
 </html>
