@@ -11,6 +11,17 @@
 }
 
 body {
+  <div class="card">
+  <h2>👤 ኣባል ወስኽ</h2>
+
+  <input type="text" id="memberName" placeholder="ስም ኣባል">
+  <input type="tel" id="memberPhone" placeholder="ስልኪ ቁጽሪ">
+  <input type="number" id="memberPayment" placeholder="ወርሓዊ ክፍያ">
+
+  <button onclick="addMember()">ኣባል ወስኽ</button>
+
+  <div id="membersList"></div>
+</div>
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f4f7f6;
@@ -482,6 +493,27 @@ function deleteMember(index) {
 updateData();
 
 </script>
+<script>
+function addMember() {
+  const name = document.getElementById("memberName").value;
+  const phone = document.getElementById("memberPhone").value;
+  const payment = document.getElementById("memberPayment").value;
 
+  if (name === "" || phone === "" || payment === "") {
+    alert("ኩሎም ቦታታት ምልኣዮም።");
+    return;
+  }
+
+  const member = document.createElement("p");
+  member.innerHTML =
+    "👤 " + name + " | 📱 " + phone + " | 💰 " + payment + " ብር";
+
+  document.getElementById("membersList").appendChild(member);
+
+  document.getElementById("memberName").value = "";
+  document.getElementById("memberPhone").value = "";
+  document.getElementById("memberPayment").value = "";
+}
+</script>
 </body>
 </html>
