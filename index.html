@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equb App</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7f6;
+  color: #222;
+}
+
+header {
+  background: #16803c;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  margin: 7px 0 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 15px;
+}
+
+.card {
+  background: white;
+  margin: 15px 0;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #16803c;
+}
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.menu button {
+  padding: 18px 10px;
+  border: none;
+  border-radius: 12px;
+  background: #e9f7ee;
+  color: #126b34;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.menu button:hover {
+  background: #16803c;
+  color: white;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  margin: 7px 0 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.primary {
+  width: 100%;
+  padding: 14px;
+  background: #16803c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.member {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px;
+  border-bottom: 1px solid #eee;
+}
+
+.status-paid {
+  color: green;
+  font-weight: bold;
+}
+
+.status-unpaid {
+  color: red;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+nav {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-around;
+}
+
+nav button {
+  border: none;
+  background: none;
+  font-size: 14px;
+  color: #16803c;
+}
+
+.total {
+  font-size: 25px;
+  font-weight: bold;
+  color: #16803c;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💰 ዕቁብ App</h1>
+  <p>ቀሊል መምሕዳሪ ዕቁብ</p>
+</header>
+
+<div class="container">
+
+  <!-- HOME -->
+  <section id="home" class="page">
+    <div class="card">
+      <h2>🏠 ቤት</h2>
+      <p>እንኳዕ ደሓን መጻእኩም!</p>
+      <p>ኣባላት፦ <b id="memberCount">0</b></p>
+      <p>ዝተኣከበ ገንዘብ፦</p>
+      <div class="total" id="totalMoney">0 ብር</div>
+    </div>
+
+    <div class="card">
+      <h2>ምርጫታት</h2>
+
+      <div class="menu">
+        <button onclick="showPage('members')">👥<br>ኣባላት</button>
+        <button onclick="showPage('payments')">💰<br>ክፍሊት</button>
+        <button onclick="showPage('draw')">🎯<br>ተራ</button>
+        <button onclick="showPage('reports')">📊<br>ሪፖርት</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section id="members" class="page hidden">
+
+    <div class="card">
+      <h2>👥 ኣባላት ዕቁብ</h2>
+
+      <input id="memberName" type="text"
+             placeholder="ስም ኣባል">
+
+      <input id="memberPhone" type="tel"
+             placeholder="ስልኪ">
+
+      <button class="primary" onclick="addMember()">
+        + ኣባል ወስኽ
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>ዝርዝር ኣባላት</h2>
+      <div id="memberList"></div>
+    </div>
+
+  </section>
+
+  <!-- PAYMENTS -->
+  <section id="payments" class="page hidden">
+
+    <div class="card">
+      <h2>💰 ክፍሊት</h2>
+
+      <label>ኣባል</label>
+      <select id="paymentMember"></select>
+
+      <label>መጠን ክፍሊት</label>
+      <input id="paymentAmount"
+             type="number"
+             placeholder="ምሳሌ፦ 1000">
+
+      <button class="primary" onclick="addPayment()">
+        ✓ ክፍሊት መዝግብ
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>ዝተመዝገበ ክፍሊት</h2>
+      <div id="paymentList"></div>
+    </div>
+
+  </section>
+
+  <!-- DRAW -->
+  <section id="draw" class="page hidden">
+
+    <div class="card">
+      <h2>🎯 ተራ ዕቁብ</h2>
+
+      <p>
+        ኣባላት ብዕጫ ተራ ንምውጻእ ኣብዚ ቁልፊ ጠውቕ።
+      </p>
+
+      <button class="primary" onclick="drawWinner()">
+        🎯 ተራ ኣውጽእ
+      </button>
+
+      <div id="winner"
+           style="text-align:center;
+                  font-size:25px;
+                  margin-top:20px;
+                  color:#16803c;">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- REPORTS -->
+  <section id="reports" class="page hidden">
+
+    <div class="card">
+      <h2>📊 ሪፖርት</h2>
+
+      <p>ጠቕላላ ኣባላት፦
+        <b id="reportMembers">0</b>
+      </p>
+
+      <p>ጠቕላላ ክፍሊት፦</p>
+
+      <div class="total" id="reportMoney">
+        0 ብር
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+  <button onclick="showPage('home')">🏠<br>ቤት</button>
+  <button onclick="showPage('members')">👥<br>ኣባላት</button>
+  <button onclick="showPage('payments')">💰<br>ክፍሊት</button>
+  <button onclick="showPage('draw')">🎯<br>ተራ</button>
+  <button onclick="showPage('reports')">📊<br>ሪፖርት</button>
+</nav>
+
+<script>
+
+let members = [];
+let payments = [];
+
+/* PAGE NAVIGATION */
+
+function showPage(page) {
+
+  document.querySelectorAll('.page')
+    .forEach(p => p.classList.add('hidden'));
+
+  document.getElementById(page)
+    .classList.remove('hidden');
+
+  updateData();
+}
+
+
+/* ADD MEMBER */
+
+function addMember() {
+
+  const name =
+    document.getElementById('memberName').value.trim();
+
+  const phone =
+    document.getElementById('memberPhone').value.trim();
+
+  if (!name) {
+    alert('በጃኹም ስም ኣባል ጽሓፉ');
+    return;
+  }
+
+  members.push({
+    name: name,
+    phone: phone
+  });
+
+  document.getElementById('memberName').value = '';
+  document.getElementById('memberPhone').value = '';
+
+  updateData();
+
+  alert('ኣባል ተወሲኹ!');
+}
+
+
+/* ADD PAYMENT */
+
+function addPayment() {
+
+  const memberIndex =
+    document.getElementById('paymentMember').value;
+
+  const amount =
+    Number(document.getElementById('paymentAmount').value);
+
+  if (memberIndex === '' || amount <= 0) {
+    alert('ኣባልን ትኽክለኛ መጠንን ምረጽ');
+    return;
+  }
+
+  payments.push({
+    member: members[memberIndex].name,
+    amount: amount,
+    date: new Date().toLocaleDateString()
+  });
+
+  document.getElementById('paymentAmount').value = '';
+
+  updateData();
+
+  alert('ክፍሊት ተመዝጊቡ!');
+}
+
+
+/* DRAW WINNER */
+
+function drawWinner() {
+
+  if (members.length === 0) {
+    alert('ቅድሚ ሕጂ ኣባላት ወስኽ');
+    return;
+  }
+
+  const random =
+    Math.floor(Math.random() * members.length);
+
+  const winner =
+    members[random].name;
+
+  document.getElementById('winner').innerHTML =
+    '🎉 ተራ ዝወጸሉ፦<br><br><b>' +
+    winner +
+    '</b>';
+}
+
+
+/* UPDATE DATA */
+
+function updateData() {
+
+  /* Members */
+
+  document.getElementById('memberCount')
+    .innerText = members.length;
+
+  document.getElementById('reportMembers')
+    .innerText = members.length;
+
+  let list = '';
+
+  members.forEach((m, i) => {
+
+    list += `
+      <div class="member">
+        <span>
+          <b>${i + 1}. ${m.name}</b><br>
+          📞 ${m.phone || 'ስልኪ የለን'}
+        </span>
+
+        <button onclick="deleteMember(${i})">
+          🗑️
+        </button>
+      </div>
+    `;
+  });
+
+  document.getElementById('memberList')
+    .innerHTML = list || 'ገና ኣባል የለን።';
+
+
+  /* Payment Members */
+
+  let options = '';
+
+  members.forEach((m, i) => {
+    options += `
+      <option value="${i}">
+        ${m.name}
+      </option>
+    `;
+  });
+
+  document.getElementById('paymentMember')
+    .innerHTML = options;
+
+
+  /* Payments */
+
+  let paymentHTML = '';
+
+  payments.forEach(p => {
+
+    paymentHTML += `
+      <div class="member">
+        <span>
+          <b>${p.member}</b><br>
+          ${p.date}
+        </span>
+
+        <span class="status-paid">
+          ${p.amount} ብር
+        </span>
+      </div>
+    `;
+  });
+
+  document.getElementById('paymentList')
+    .innerHTML =
+    paymentHTML || 'ገና ክፍሊት የለን።';
+
+
+  /* Total */
+
+  const total =
+    payments.reduce(
+      (sum, p) => sum + p.amount,
+      0
+    );
+
+  document.getElementById('totalMoney')
+    .innerText = total + ' ብር';
+
+  document.getElementById('reportMoney')
+    .innerText = total + ' ብር';
+}
+
+
+/* DELETE MEMBER */
+
+function deleteMember(index) {
+
+  if (confirm('እዚ ኣባል ክድምሰስ ትደሊዶ?')) {
+
+    members.splice(index, 1);
+
+    updateData();
+  }
+}
+
+
+/* START */
+
+updateData();
+
+</script>
+
+</body>
+</html>
